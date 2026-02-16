@@ -1,0 +1,16 @@
+# macOS / editor
+.DS_Store
+
+# Workspace orchestration repo should not track nested source repos
+navpay-android/
+navpay-admin/
+navpay-landing/
+navpay-otp/
+navpay-tgbot/
+
+# Centralized git worktrees
+worktrees/*
+!worktrees/.gitkeep
+
+# Local refs and scratch
+ref/

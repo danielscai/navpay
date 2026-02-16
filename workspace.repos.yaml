@@ -1,0 +1,31 @@
+version: 1
+workspace: navpay
+
+repositories:
+  - name: navpay-android
+    path: navpay-android
+    role: client
+    default_branch: main
+
+  - name: navpay-admin
+    path: navpay-admin
+    role: server
+    default_branch: main
+
+  - name: navpay-landing
+    path: navpay-landing
+    role: supporting
+
+  - name: navpay-otp
+    path: navpay-otp
+    role: supporting
+
+  - name: navpay-tgbot
+    path: navpay-tgbot
+    role: supporting
+
+worktree_root:
+  path: worktrees
+  layout:
+    navpay-android: worktrees/navpay-android/<ticket-or-branch>
+    navpay-admin: worktrees/navpay-admin/<ticket-or-branch>
