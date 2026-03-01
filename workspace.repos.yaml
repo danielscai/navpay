@@ -16,10 +16,6 @@ repositories:
     path: navpay-landing
     role: supporting
 
-  - name: navpay-otp
-    path: navpay-otp
-    role: supporting
-
   - name: navpay-tgbot
     path: navpay-tgbot
     role: supporting
