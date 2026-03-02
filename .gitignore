@@ -7,6 +7,7 @@ navpay-admin/
 navpay-landing/
 navpay-otp/
 navpay-tgbot/
+movpay-apk/
 
 # Centralized git worktrees
 worktrees/*

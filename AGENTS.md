@@ -54,3 +54,36 @@ This workspace contains two independent projects:
 - Remove finished worktrees with:
   - `git -C navpay-android worktree remove worktrees/navpay-android/<ticket-or-branch>`
   - `git -C navpay-admin worktree remove worktrees/navpay-admin/<ticket-or-branch>`
+
+## navpay-admin Worktree Environment Isolation (Only for navpay-admin)
+- Scope: this section applies only to `navpay-admin` worktrees. Do not apply these rules to other repos unless explicitly requested.
+- Goal: isolate session, database, and redis state between concurrent `navpay-admin` worktrees on one machine.
+
+### Naming and Allocation Rules
+- `ticket_slug`: lowercase ticket/branch slug; convert `-` to `_` (example: `feat-ws6-retry` -> `feat_ws6_retry`).
+- `COOKIE_NAMESPACE`: must equal `ticket_slug`.
+- Postgres DB name: `navpay_admin_<ticket_slug>`.
+- Redis DB index strategy (scheme A): reserve `0` for main `navpay-admin` directory; worktrees use `1..n`.
+- Port strategy: reserve `3000` for main `navpay-admin` directory; worktrees use `3101..3199`.
+
+### Required Per-Worktree Env Policy
+- For each new `navpay-admin` worktree, create and use `.env.local` only. Do not modify shared `.env`.
+- Initialize from template: `cp .env.example .env.local`.
+- Set these values in `.env.local`:
+  - `PORT=<allocated_port>`
+  - `APP_BASE_URL=http://localhost:<allocated_port>`
+  - `NEXTAUTH_URL=http://localhost:<allocated_port>`
+  - `AUTH_SECRET=<unique random secret per worktree>`
+  - `COOKIE_NAMESPACE=<ticket_slug>`
+  - `DATABASE_URL=postgres://navpay_admin:navpay_admin_pwd@127.0.0.1:5432/navpay_admin_<ticket_slug>`
+  - `REDIS_URL=redis://127.0.0.1:6379/<allocated_redis_db_index>`
+
+### Bootstrap and Run (navpay-admin worktree)
+- Create DB: `createdb -O navpay_admin navpay_admin_<ticket_slug>` (ignore error if exists).
+- Migrate and seed: `yarn db:migrate && yarn db:seed`.
+- Start dev server with allocated port: `PORT=<allocated_port> yarn dev`.
+
+### Cleanup When Removing navpay-admin Worktree
+- Remove worktree: `git -C navpay-admin worktree remove worktrees/navpay-admin/<ticket-or-branch>`.
+- Drop isolated DB: `dropdb navpay_admin_<ticket_slug>`.
+- Flush isolated Redis DB: `redis-cli -n <allocated_redis_db_index> FLUSHDB`.
