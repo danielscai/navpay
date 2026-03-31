@@ -1,0 +1,17 @@
+{
+  "protocolVersion": "1",
+  "versionHeader": "x-navpay-hb-version",
+  "sharedFields": {
+    "timestamp": "timestamp",
+    "appName": "appName",
+    "androidId": "androidId"
+  },
+  "commandFields": {
+    "commandId": "commandId",
+    "commandType": "commandType",
+    "commandPayload": "commandPayload"
+  },
+  "sharedCommands": [
+    "ping"
+  ]
+}
