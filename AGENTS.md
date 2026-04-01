@@ -78,6 +78,12 @@ This workspace contains two independent projects:
   - `DATABASE_URL=postgres://navpay_admin:navpay_admin_pwd@127.0.0.1:5432/navpay_admin_<ticket_slug>`
   - `REDIS_URL=redis://127.0.0.1:6379/<allocated_redis_db_index>`
 
+### Agent Env Resolution Order (navpay-admin)
+- For any DB/data operation in `navpay-admin` or its worktrees, the agent must resolve environment in this order:
+  1. Read `.env.local` first and use its `DATABASE_URL`/`REDIS_URL` when present.
+  2. Only if `.env.local` is missing or the required keys are absent, fall back to `.env`.
+- The agent should state which env file path was used before executing destructive DB actions.
+
 ### Bootstrap and Run (navpay-admin worktree)
 - Create DB: `createdb -O navpay_admin navpay_admin_<ticket_slug>` (ignore error if exists).
 - Migrate and seed: `yarn db:migrate && yarn db:seed`.
