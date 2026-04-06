@@ -149,3 +149,16 @@ From `navpay-phonepe` CLI:
 - Audit all publish operations via release event actor and token usage timestamp.
 - Do not persist plaintext token in repo, logs, or screenshots.
 
+## 10. Implementation Sync (2026-04-06)
+
+Delivered scope:
+- `payment_app_release` scoped publish token model + hash-only verification.
+- Publisher-only bearer auth guard (no admin cookie/session reuse).
+- Publisher create/upload/activate route lane with token actor audit.
+- Local-only default publish token seed (`APP_ENV=staging/prod` and `NODE_ENV=production` skip).
+- `navpay-phonepe` release CLI (`--env` default local) with idempotency precheck.
+
+Local verification notes:
+- Local default token used for e2e: `nprt_local_phonepe_publisher` (stored as hash only in DB).
+- This workstation lacked `aapt`, so CLI metadata parsing uses local fallback values when `aapt` is unavailable.
+- Local run required explicit `--baseUrl http://localhost:3001` and `--appId <actual-payment-app-id>` because active dev service and app id were environment-specific.
