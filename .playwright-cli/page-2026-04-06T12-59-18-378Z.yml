@@ -1,0 +1,23 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e7]: NavPay Admin
+      - heading "登录" [level=1] [ref=e8]
+      - paragraph [ref=e9]: 默认账号将强制启用 Google Authenticator 二次验证。
+      - generic [ref=e11]:
+        - button "安全密钥登录" [ref=e12]
+        - button "密码登录" [ref=e13]
+      - generic [ref=e30]:
+        - generic [ref=e31]: 用户名
+        - textbox "用户名" [ref=e32]: admin
+        - generic [ref=e33]: 密码
+        - textbox "密码" [ref=e34]: NavPay@123456!
+        - generic [ref=e36]: Google Authenticator 验证码 / 备用恢复码
+        - textbox "Google Authenticator 验证码 / 备用恢复码" [ref=e37]: "893282"
+        - generic [ref=e38]: 没有验证码时可输入备用恢复码（8 位，大写字母/数字）。没有恢复码请联系管理员重置 2FA。
+        - generic [ref=e40]: 登录失败：验证码/恢复码错误
+        - button "验证并登录" [ref=e39]
+    - generic [ref=e19]: 安全：强密码、登录限速/锁定、CSRF、防护头、2FA。
+  - button "Open Next.js Dev Tools" [ref=e25] [cursor=pointer]:
+    - img [ref=e26]
+  - alert [ref=e29]

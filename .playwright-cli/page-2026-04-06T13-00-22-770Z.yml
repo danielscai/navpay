@@ -1,0 +1,222 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e25] [cursor=pointer]:
+    - img [ref=e26]
+  - alert [ref=e29]
+  - generic [ref=e43]:
+    - complementary [ref=e44]:
+      - generic [ref=e655]:
+        - generic [ref=e656]:
+          - generic [ref=e657]:
+            - generic [ref=e658]: NavPay
+            - generic [ref=e659]: 管理后台
+          - button "收起菜单" [ref=e660]:
+            - img [ref=e661]
+        - generic [ref=e664]: 业务
+        - generic [ref=e665]:
+          - link "仪表盘" [ref=e666] [cursor=pointer]:
+            - /url: /admin
+            - img [ref=e667]
+            - generic [ref=e672]: 仪表盘
+          - link "商户管理" [ref=e673] [cursor=pointer]:
+            - /url: /admin/merchants
+            - img [ref=e674]
+            - generic [ref=e678]: 商户管理
+          - link "代收订单" [ref=e679] [cursor=pointer]:
+            - /url: /admin/orders/collect
+            - img [ref=e680]
+            - generic [ref=e682]: 代收订单
+          - link "代付订单" [ref=e683] [cursor=pointer]:
+            - /url: /admin/orders/payout
+            - img [ref=e684]
+            - generic [ref=e686]: 代付订单
+          - link "充值订单" [ref=e687] [cursor=pointer]:
+            - /url: /admin/orders/recharge
+            - img [ref=e688]
+            - generic [ref=e692]: 充值订单
+          - link "支付账户" [ref=e693] [cursor=pointer]:
+            - /url: /admin/payout/channels
+            - img [ref=e694]
+            - generic [ref=e698]: 支付账户
+          - link "手机" [ref=e699] [cursor=pointer]:
+            - /url: /admin/account/phone
+            - img [ref=e700]
+            - generic [ref=e703]: 手机
+        - generic [ref=e704]: 运营管理
+        - generic [ref=e705]:
+          - link "运营设置" [ref=e706] [cursor=pointer]:
+            - /url: /admin/ops/settings
+            - img [ref=e707]
+            - generic [ref=e711]: 运营设置
+          - link "运营数据" [ref=e712] [cursor=pointer]:
+            - /url: /admin/ops/data
+            - img [ref=e713]
+            - generic [ref=e714]: 运营数据
+        - generic [ref=e715]: 系统
+        - generic [ref=e716]:
+          - link "系统参数" [ref=e717] [cursor=pointer]:
+            - /url: /admin/system/config
+            - img [ref=e718]
+            - generic [ref=e722]: 系统参数
+          - link "安全" [ref=e723] [cursor=pointer]:
+            - /url: /admin/security
+            - img [ref=e724]
+            - generic [ref=e727]: 安全
+        - generic [ref=e728]: 调试工具
+        - link "调试入口" [ref=e730] [cursor=pointer]:
+          - /url: /admin/tools
+          - img [ref=e731]
+          - generic [ref=e733]: 调试入口
+        - generic [ref=e734]: "V1: PostgreSQL"
+    - main [ref=e119]:
+      - generic [ref=e120]:
+        - generic [ref=e123]: 运营设置
+        - generic [ref=e124]:
+          - button "时区 中国 ▼" [ref=e126]:
+            - generic [ref=e127]: 🇨🇳
+            - generic [ref=e128]: 时区
+            - generic [ref=e129]: 中国
+            - generic [ref=e130]: ▼
+          - button "管理员 (admin) ▼" [ref=e268]:
+            - generic [ref=e133]:
+              - generic [ref=e134]: 管理员 (admin)
+              - generic [ref=e135]: ▼
+      - generic [ref=e349]:
+        - tablist "ops-settings-tabs" [ref=e350]:
+          - generic [ref=e351]:
+            - tab "运营活动" [ref=e352] [cursor=pointer]
+            - tab "商户设置" [ref=e353] [cursor=pointer]
+            - tab "代收设置" [ref=e354] [cursor=pointer]
+            - tab "代付设置" [ref=e355] [cursor=pointer]
+            - tab "充值设置" [ref=e356] [cursor=pointer]
+            - tab "支付账户设置" [ref=e357] [cursor=pointer]
+            - tab "支付APP管理" [selected] [ref=e358] [cursor=pointer]
+            - tab "活动设置" [ref=e359] [cursor=pointer]
+            - tab "对账风控" [ref=e360] [cursor=pointer]
+        - generic [ref=e736]:
+          - generic [ref=e737]:
+            - generic [ref=e739]:
+              - generic [ref=e741]: 支付 App
+              - generic [ref=e742]: 启用 1 / 停用 3
+            - button "+ 新增支付App" [ref=e744]:
+              - generic [ref=e745]:
+                - generic [ref=e746]: +
+                - text: 新增支付App
+                - img [ref=e748]
+            - generic [ref=e752]:
+              - button "phonepe icon phonepe 当前激活 26.01.02.0 (v26010205) 已启用" [ref=e753]:
+                - generic [ref=e754]:
+                  - generic [ref=e755]:
+                    - img "phonepe icon" [ref=e756]
+                    - generic [ref=e757]:
+                      - generic [ref=e758]: phonepe
+                      - generic [ref=e759]: 当前激活 26.01.02.0 (v26010205)
+                  - generic [ref=e760]: 已启用
+              - button "freecharge icon freecharge 当前激活 v1 已停用" [ref=e761]:
+                - generic [ref=e762]:
+                  - generic [ref=e763]:
+                    - img "freecharge icon" [ref=e764]
+                    - generic [ref=e765]:
+                      - generic [ref=e766]: freecharge
+                      - generic [ref=e767]: 当前激活 v1
+                  - generic [ref=e768]: 已停用
+              - button "mobikwik icon mobikwik 当前激活 v1 已停用" [ref=e769]:
+                - generic [ref=e770]:
+                  - generic [ref=e771]:
+                    - img "mobikwik icon" [ref=e772]
+                    - generic [ref=e773]:
+                      - generic [ref=e774]: mobikwik
+                      - generic [ref=e775]: 当前激活 v1
+                  - generic [ref=e776]: 已停用
+              - button "paytm icon paytm 当前激活 1.0.0 (v100) 已停用" [ref=e777]:
+                - generic [ref=e778]:
+                  - generic [ref=e779]:
+                    - img "paytm icon" [ref=e780]
+                    - generic [ref=e781]:
+                      - generic [ref=e782]: paytm
+                      - generic [ref=e783]: 当前激活 1.0.0 (v100)
+                  - generic [ref=e784]: 已停用
+            - button "导入清单" [ref=e786]:
+              - img [ref=e788]
+              - text: 导入清单
+          - generic [ref=e792]:
+            - generic [ref=e793]:
+              - generic [ref=e795]: 发布操作区
+              - generic [ref=e796]: 分发目标：Local/Cloudflare（即将上线）
+            - generic [ref=e798]:
+              - generic [ref=e799]:
+                - text: 代付
+                - img [ref=e801]
+                - switch "代付" [checked] [ref=e804]
+              - generic [ref=e806]:
+                - text: 代收
+                - img [ref=e808]
+                - switch "代收" [checked] [ref=e811]
+              - button "app-actions-menu" [ref=e814]:
+                - generic [ref=e815]: ⋯
+                - generic [ref=e816]: 操作
+            - generic [ref=e818]:
+              - generic [ref=e819]: 发布时间线
+              - generic [ref=e820]: 点击某个版本可进入详情，支持返回时间线。
+              - generic [ref=e821]:
+                - button "新建版本" [ref=e822]:
+                  - img [ref=e824]
+                  - text: 新建版本
+                - 'button "26.01.02.0 v26010205 已激活 artifact: 3 2026/4/6 20:56:26" [ref=e827]':
+                  - generic [ref=e828]:
+                    - generic [ref=e829]:
+                      - generic [ref=e830]: 26.01.02.0
+                      - generic [ref=e831]: v26010205
+                    - generic [ref=e832]: 已激活
+                  - generic [ref=e833]:
+                    - generic [ref=e834]: "artifact: 3"
+                    - generic [ref=e835]: 2026/4/6 20:56:26
+                - 'button "1.0.0 v100 inactive artifact: 3 2026/4/6 13:15:34" [ref=e836]':
+                  - generic [ref=e837]:
+                    - generic [ref=e838]:
+                      - generic [ref=e839]: 1.0.0
+                      - generic [ref=e840]: v100
+                    - generic [ref=e841]: inactive
+                  - generic [ref=e842]:
+                    - generic [ref=e843]: "artifact: 3"
+                    - generic [ref=e844]: 2026/4/6 13:15:34
+  - generic [ref=e845]:
+    - button "close" [ref=e846]
+    - generic [ref=e848]:
+      - generic [ref=e849]:
+        - generic [ref=e850]: 新建版本
+        - button "关闭" [ref=e851]
+      - generic [ref=e853]:
+        - generic [ref=e854]: 包名：com.phonepe.app
+        - generic [ref=e855]:
+          - generic [ref=e856]:
+            - generic [ref=e857]: 版本名
+            - textbox "版本名" [ref=e858]: 26.01.02.1
+          - generic [ref=e859]:
+            - generic [ref=e860]: 版本码
+            - textbox "版本码" [ref=e861]: "26010206"
+          - generic [ref=e862]:
+            - generic [ref=e863]: 最小 SDK
+            - textbox "最小 SDK" [ref=e864]: "24"
+          - generic [ref=e865]:
+            - generic [ref=e866]: 目标 SDK
+            - textbox "目标 SDK" [ref=e867]: "35"
+          - generic [ref=e868]:
+            - generic [ref=e869]: 安装器最低版本
+            - textbox "安装器最低版本" [ref=e870]: "1"
+        - generic [ref=e871]:
+          - button "取消" [ref=e872]
+          - button "创建版本" [ref=e873]:
+            - img [ref=e875]
+            - text: 创建版本
+  - generic [ref=e878]:
+    - button "close" [ref=e879]
+    - generic [ref=e882]:
+      - generic [ref=e883]:
+        - generic [ref=e884]: 支付APP管理操作验证
+        - button "关闭" [ref=e885]
+      - generic [ref=e887]:
+        - generic [ref=e888]: 该操作属于敏感操作，需要先完成一次安全验证。
+        - generic [ref=e889]: 将使用已绑定的安全密钥完成验证。
+        - generic [ref=e890]:
+          - button "取消" [ref=e891]
+          - button "开始验证" [ref=e892]

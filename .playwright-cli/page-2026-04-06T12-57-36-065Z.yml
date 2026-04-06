@@ -1,0 +1,25 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e56] [cursor=pointer]:
+    - img [ref=e26]
+  - alert [ref=e29]
+  - generic [ref=e59]:
+    - generic [ref=e62]: 安全设置
+    - heading "绑定 Google Authenticator" [level=1] [ref=e63]
+    - paragraph [ref=e64]: 你需要至少绑定一种二次验证方式：安全密钥或 Google Authenticator。
+    - generic [ref=e65]:
+      - generic [ref=e66]: 绑定安全密钥（推荐）
+      - generic [ref=e67]: 安全密钥由系统生物识别/安全 Key 提供（WebAuthn/通行密钥），可在多种设备与浏览器使用（取决于系统与浏览器支持）。
+      - generic [ref=e68]:
+        - textbox "设备名称（可选）例如：MacBook Touch ID" [ref=e69]
+        - button "绑定安全密钥" [ref=e70]
+    - generic [ref=e71]:
+      - generic [ref=e72]:
+        - generic [ref=e73]: 二维码
+        - img "2fa qr" [ref=e74]
+      - generic [ref=e75]:
+        - generic [ref=e76]: 手动密钥
+        - generic [ref=e77]: otpauth://totp/NavPay:NavPay:admin%40navpay.local?secret=VQQQ2WM3HLPVSTA2Y366L2PTPSHTO75Q&issuer=NavPay
+        - generic [ref=e78]: 验证码
+        - text: 验证码
+        - textbox "验证码" [ref=e79]
+        - button "确认绑定" [ref=e80]

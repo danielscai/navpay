@@ -1,0 +1,18 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e7]: NavPay Admin
+      - heading "登录" [level=1] [ref=e8]
+      - paragraph [ref=e9]: 默认账号将强制启用 Google Authenticator 二次验证。
+      - generic [ref=e11]:
+        - button "安全密钥登录" [ref=e12]
+        - button "密码登录" [ref=e13]
+      - generic [ref=e14]:
+        - generic [ref=e15]: 用户名
+        - textbox "用户名" [ref=e16]: admin
+        - generic [ref=e17]: 安全密钥登录只需要用户名，不需要密码。若账号尚未绑定安全密钥，可切换到“密码登录”进入后台后在个人设置绑定。
+        - button "使用安全密钥登录" [ref=e18]
+    - generic [ref=e19]: 安全：强密码、登录限速/锁定、CSRF、防护头、2FA。
+  - button "Open Next.js Dev Tools" [ref=e25] [cursor=pointer]:
+    - img [ref=e26]
+  - alert [ref=e29]

@@ -1,0 +1,34 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e7]: NavPay Admin
+      - heading "登录" [level=1] [ref=e8]
+      - paragraph [ref=e9]: 默认账号将强制启用 Google Authenticator 二次验证。
+      - generic [ref=e11]:
+        - button "安全密钥登录" [ref=e12]
+        - button "密码登录" [ref=e13]
+      - generic [ref=e30]:
+        - generic [ref=e31]: 用户名
+        - textbox "用户名" [ref=e32]: admin
+        - generic [ref=e33]: 密码
+        - textbox "密码" [ref=e34]: NavPay@123456!
+        - button "下一步" [ref=e35]
+    - generic [ref=e19]: 安全：强密码、登录限速/锁定、CSRF、防护头、2FA。
+  - generic [active]:
+    - menu "Next.js Dev Tools Items" [ref=e36]:
+      - generic [ref=e37]:
+        - menuitem "Route Static" [ref=e38] [cursor=pointer]:
+          - generic [ref=e39]: Route
+          - generic [ref=e40]: Static
+        - generic "Turbopack is enabled." [ref=e41]:
+          - generic [ref=e42]: Bundler
+          - generic [ref=e43]: Turbopack
+        - menuitem "Route Info" [ref=e44]:
+          - generic [ref=e45]: Route Info
+          - img [ref=e47]
+      - menuitem "Preferences" [ref=e50]:
+        - generic [ref=e51]: Preferences
+        - img [ref=e53]
+    - button "Close Next.js Dev Tools" [expanded] [ref=e55] [cursor=pointer]:
+      - img [ref=e26]
+  - alert [ref=e29]
