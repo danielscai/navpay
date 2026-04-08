@@ -18,6 +18,7 @@ To keep this plan executable without changing scope:
 1. `Task 1` target files already exist in repository state; execute as "update/verify existing files" (still fail-first/readability verification + commit).
 2. `Task 7` spans two independent repositories (`docs/*` in orchestration repo, `navpay-admin/docs/*` in admin repo). Execute one task with two repo-local commits to preserve repository boundaries.
 3. All `navpay-admin` changes must run in isolated worktree path under `worktrees/navpay-admin/<ticket>`.
+4. `Task 5` merchant API key auth entrypoint is currently implemented in `src/lib/merchant-apikey.ts` and used by `src/app/api/v1/*`; enforce allowlist there (merchant scope unchanged) instead of `src/app/api/merchant/*` session routes.
 
 ### Task 1: Create deployment design and implementation records in top-level docs
 
@@ -436,3 +437,32 @@ git commit -m "docs: append final regression and handoff checklist"
 3. Application-layer merchant allowlist third.
 4. Deploy scripts and runbooks fourth.
 5. Staging verification and production checklist last.
+
+## Final Regression Evidence Checklist (Executed 2026-04-08)
+
+### Admin quality gates
+1. `cd /Users/danielscai/Documents/workspace/navpay/worktrees/navpay-admin/prod-deploy-20260408 && yarn lint`
+   - Exit: 0
+   - Result: PASS with existing warnings (32 warnings, 0 errors).
+2. `cd /Users/danielscai/Documents/workspace/navpay/worktrees/navpay-admin/prod-deploy-20260408 && yarn typecheck`
+   - Exit: 2
+   - Result: FAIL with pre-existing repo-wide TypeScript errors (implicit any/type mismatches + missing generated Prisma client path).
+3. `cd /Users/danielscai/Documents/workspace/navpay/worktrees/navpay-admin/prod-deploy-20260408 && yarn test --run`
+   - Exit: 1
+   - Result: FAIL (117 failed files / 74 failed tests) with dominant blocker: `Cannot find package '@/generated/prisma/client'` in many suites.
+
+### Targeted distribution tests
+1. `cd /Users/danielscai/Documents/workspace/navpay/worktrees/navpay-admin/prod-deploy-20260408 && yarn vitest run tests/unit/api-public-downloads-manifest.test.ts`
+   - Exit: 1
+   - Result: FAIL due to missing `@/generated/prisma/client` dependency chain.
+2. `cd /Users/danielscai/Documents/workspace/navpay/worktrees/navpay-admin/prod-deploy-20260408 && yarn vitest run tests/unit/publisher-payment-app-release-routes.test.ts`
+   - Exit: 1
+   - Result: FAIL due to missing `@/generated/prisma/client` dependency chain.
+
+### Deployment script dry-run checks
+1. `cd /Users/danielscai/Documents/workspace/navpay/worktrees/navpay-admin/prod-deploy-20260408 && bash deploy/production/scripts/deploy_internal.sh --env prod --dry-run`
+   - Exit: 0
+   - Result: PASS (`preflight ok`, `would run compose up`, `would check health`).
+2. `cd /Users/danielscai/Documents/workspace/navpay/worktrees/navpay-admin/prod-deploy-20260408 && bash deploy/production/scripts/deploy_public.sh --env prod --dry-run`
+   - Exit: 0
+   - Result: PASS (`preflight ok`, `would run compose up`, `would check health`).
