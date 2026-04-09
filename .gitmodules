@@ -1,0 +1,9 @@
+[submodule "navpay-admin"]
+	path = navpay-admin
+	url = git@github.com:danielscai/navpay-admin.git
+[submodule "navpay-android"]
+	path = navpay-android
+	url = git@github.com:danielscai/navpay-android.git
+[submodule "navpay-phonepe"]
+	path = navpay-phonepe
+	url = git@github.com:danielscai/navpay-phonepe.git

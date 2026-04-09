@@ -2,10 +2,7 @@
 .DS_Store
 
 # Workspace orchestration repo should not track nested source repos
-navpay-android/
-navpay-admin/
 navpay-landing/
-navpay-phonepe/
 navpay-otp/
 navpay-tgbot/
 movpay-apk/
