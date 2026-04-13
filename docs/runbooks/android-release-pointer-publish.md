@@ -1,118 +1,71 @@
 # Android Release Pointer Publish Runbook
 
 ## Purpose
-Publish Android releases by uploading immutable artifacts first, then atomically switching the release pointer.
 
-This keeps Cloudflare and the origin aligned with a simple rule:
-- artifacts are immutable and can be cached for a long time
-- `current.json` is the only mutable release pointer
-- rollback is a pointer switch, not a re-upload
+将 Android 支付 App 发布统一为“不可变静态目录 + 可变 pointer”的两层模型。
 
-## Release Shape
+- 不可变层：`/payment-apps/<appId>/releases/<versionName>/<baseSha256>/...`
+- 可变层：`/payment-apps/<appId>/current.json`
 
-Use immutable tag examples based on sha values:
+回滚只切 pointer，不覆盖历史文件。
 
-- release directory: `/releases/9f2a8c1b6d4e7a3f5c1d2e9f0a6b7c8d9e0f1a2b/`
-- artifact file: `/releases/9f2a8c1b6d4e7a3f5c1d2e9f0a6b7c8d9e0f1a2b/app-release.apk`
-- release manifest: `/releases/9f2a8c1b6d4e7a3f5c1d2e9f0a6b7c8d9e0f1a2b/manifest.json`
-- active pointer: `/current.json`
+## Standard Release Shape
 
-The sha tag must remain immutable. Never overwrite a release directory once published.
+以 `phonepe` 为例：
+
+- manifest：`/payment-apps/phonepe/releases/26.04.13.3/<baseSha256>/manifest.json`
+- base：`/payment-apps/phonepe/releases/26.04.13.3/<baseSha256>/base.apk`
+- split：`/payment-apps/phonepe/releases/26.04.13.3/<baseSha256>/split_config.*.apk`
+- pointer：`/payment-apps/phonepe/current.json`
 
 ## Publish Workflow
 
-### 1. Build the release
-Produce the APK and manifest for a single sha-tagged release directory.
+1. 本地构建：`orch release phonepe --version <versionName> --test|--prod`
+2. 静态上传 + 注册：`orch publish phonepe --bundle <bundle-path> --test|--prod`
+3. 生产必须双确认：`--prod --yes-prod`
+4. 校验 `from-manifest` 返回 `ok=true`，并确认 release 状态（默认激活）
+5. 若需要 pointer 流程，更新 `current.json` 指向目标 release
+6. 对 pointer 做定向 purge（不要 purge 不可变路径）
 
-Required outputs:
-- APK artifact
-- manifest with sha, version, checksum, and download URL
-- `current.json` candidate payload pointing to the new release
+## current.json Contract
 
-### 2. Upload immutable artifacts first
-Upload the sha-tagged directory before touching `current.json`.
+建议最小字段：
 
-Checks:
-- artifact bytes match the expected checksum
-- manifest references the same sha tag
-- nothing in the sha-tagged path is mutable after upload
+- `appId`
+- `releaseId`
+- `versionName`
+- `versionCode`
+- `manifestUrl`
+- `updatedAt`
 
-### 3. Validate the new release
-Confirm the release is reachable from origin and, if applicable, through Cloudflare.
+## Rollback Workflow
 
-Suggested validation:
-- manifest fetch succeeds
-- artifact download succeeds
-- checksum matches the manifest
+1. 找到上一稳定 release
+2. 将 `current.json` 改回上一版本
+3. 仅 purge pointer（和必要 manifest alias）
+4. 复核客户端已解析到旧版本
 
-### 4. Switch the pointer
-Replace `current.json` so it points at the new sha release.
+## Do / Don't
 
-Only this file should change for cutover.
+Do:
 
-### 5. Selective purge
-Purge only:
-- `/current.json`
-- any manifest pointer alias used by clients
+- 只新增静态目录，不覆盖
+- 仅 purge pointer 层
+- 保留最近稳定版本以便秒级回滚
 
-Do not purge:
-- the immutable APK path
-- the release directory for the new sha
-- unrelated routes
+Don't:
 
-## Rollback Using current.json
+- 不要覆盖 `releases/.../<baseSha256>/` 下任何文件
+- 不要全站 purge
+- 不要用“重传旧包”代替 pointer 回滚
 
-Rollback is a pointer reversion.
+## Smoke Commands
 
-### Rollback steps
-
-1. Identify the previous known-good sha release.
-2. Update `current.json` to reference the previous sha.
-3. Purge only `current.json` and any lightweight manifest alias.
-4. Verify clients now resolve the prior release.
-
-### Rollback rules
-
-- do not delete the new immutable release immediately
-- do not re-upload the old artifact unless it is missing or corrupted
-- do not purge the entire zone
-- preserve the new release for later investigation if needed
-
-## Optional Curl Examples
-
-### Manifest fetch
 ```bash
-curl -i https://downloads.example.com/current.json
+# pointer
+curl -fsSI "https://download.navpay.site/payment-apps/phonepe/current.json"
+curl -fsS  "https://download.navpay.site/payment-apps/phonepe/current.json"
+
+# immutable manifest
+curl -fsSI "https://download.navpay.site/payment-apps/phonepe/releases/<versionName>/<baseSha256>/manifest.json"
 ```
-
-### Artifact download
-```bash
-curl -L -o app-release.apk \
-  https://downloads.example.com/releases/9f2a8c1b6d4e7a3f5c1d2e9f0a6b7c8d9e0f1a2b/app-release.apk
-```
-
-### Denied admin route
-```bash
-curl -i https://admin.example.com/admin/resources
-```
-
-Expected outcome:
-- manifest and artifact routes are public distribution paths
-- admin routes remain protected and should not be treated as release assets
-- Cloudflare continues to act only as acceleration and security infrastructure
-
-## Operational Checklist
-
-Before declaring a release complete:
-
-1. the sha-tagged artifact exists
-2. the manifest checksum matches the artifact
-3. `current.json` points to the new sha
-4. selective purge has been run
-5. the old release is still available for rollback
-
-## Troubleshooting
-
-- If the wrong release appears, inspect `current.json` first.
-- If the artifact does not download, check the immutable sha path and origin upload.
-- If rollback fails, verify the previous sha still exists and that only pointer files were purged.
