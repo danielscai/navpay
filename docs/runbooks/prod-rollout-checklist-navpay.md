@@ -1,5 +1,12 @@
 # NavPay Production Rollout Checklist
 
+## 0. Unified Command Contract
+
+- [ ] 仅通过 `yarn release <product>` / `yarn deploy <product> [--version]` 执行。
+- [ ] 仅允许单产品执行，不支持 `all`。
+- [ ] 版本符合 `YY.MM.DD.N`，tag 符合 `vYY.MM.DD.N`。
+- [ ] 发布/部署前已执行：`git fetch --tags --force origin`、`git pull --ff-only origin main`。
+
 ## 1. Release Gate
 
 - [ ] 发布链路为 `ssh/static + from-manifest`，不使用 HTTP 大文件上传。

@@ -20,12 +20,12 @@
 
 ## Publish Workflow
 
-1. 本地构建：`orch release phonepe --version <versionName> --test|--prod`
-2. 静态上传 + 注册：`orch publish phonepe --bundle <bundle-path> --test|--prod`
-3. 生产必须双确认：`--prod --yes-prod`
-4. 校验 `from-manifest` 返回 `ok=true`，并确认 release 状态（默认激活）
-5. 若需要 pointer 流程，更新 `current.json` 指向目标 release
-6. 对 pointer 做定向 purge（不要 purge 不可变路径）
+1. 统一入口发布：`yarn release <product>`（Android 对应 `yarn release android`）
+2. 统一入口部署：`yarn deploy <product> [--version]`（Android 对应 `yarn deploy android [--version]`）
+3. 版本规则：业务版本 `YY.MM.DD.N`，Git Tag `vYY.MM.DD.N`
+4. 发布/部署前必须执行：`git fetch --tags --force origin` + `git pull --ff-only origin main`
+5. 不传 `--version` 时，从本地最新 tag 推导版本并校验 `origin` 存在
+6. `current.json` 更新必须使用临时文件 + 原子 `mv`
 
 ## current.json Contract
 

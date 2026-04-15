@@ -18,7 +18,7 @@
 
 `product` 全集统一为：`admin | checksum | android | phonepe`。
 
-约束：每个仓库只实现自己负责的 product 子集；不支持的 product 必须明确报错并退出。
+约束：每个仓库只实现自己负责的 product 子集；不支持的 product 必须明确报错并退出；不支持 `all` 这类多产品聚合入口。
 
 ## 3. 版本规则（全仓统一）
 
