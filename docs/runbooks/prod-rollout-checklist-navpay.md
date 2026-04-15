@@ -6,16 +6,14 @@
 - [ ] 仅允许单产品执行，不支持 `all`。
 - [ ] 版本符合 `YY.MM.DD.N`，tag 符合 `vYY.MM.DD.N`。
 - [ ] 发布/部署前已执行：`git fetch --tags --force origin`、`git pull --ff-only origin main`。
+- [ ] deploy 未传 `--version` 时，已从本地最新合法 tag 推导并校验 `origin` 存在该 tag。
 
 ## 1. Release Gate
 
-- [ ] 发布链路为 `ssh/static + from-manifest`，不使用 HTTP 大文件上传。
-- [ ] `orch publish` 生产命令显式包含 `--prod --yes-prod`。
-- [ ] `PAYMENT_APP_RELEASE_MANIFEST_ALLOWED_HOSTS` 已配置且仅包含白名单域名。
-- [ ] download-site 挂载目录存在且只读对外（默认 `/data/download-site`）。
-- [ ] 目标版本静态目录完整：`manifest.json`、`base.apk`、required splits。
-- [ ] 幂等键确认：`appId + targetEnv + versionCode + baseSha256`。
-- [ ] 回滚目标已确认（上一稳定 release 或 pointer 目标）。
+- [ ] admin runtime 使用 direct runtime（pm2 + nginx 多 conf），不走 admin/reverse-proxy/download-site 容器 runtime。
+- [ ] checksum/postgres/redis 仍由容器运行（infra profile）。
+- [ ] Android/PhonePe 发布链路仅包含本地打包 + copy（+ PhonePe activate API）。
+- [ ] download-site 静态目录存在，且 pointer 更新使用临时文件 + 原子 `mv`。
 
 ## 2. Operator Controls
 
@@ -26,30 +24,28 @@
 
 ## 3. Rollout Sequence
 
-1. `orch release phonepe --version <versionName> --prod`
-2. `orch publish phonepe --bundle <bundle-path> --prod --yes-prod`
-3. 验证 admin 发布结果（`ok=true`，release 已激活或按预期状态）
-4. 验证下载 URL 与 manifest 可达
-5. 若使用 pointer，更新 `current.json` 并定向 purge
+1. `yarn release <product>`
+2. `yarn deploy <product> [--version]`
+3. 校验 `releases/<product>/<version>/metadata.json|steps.log|result.json` 完整落盘
+4. 校验业务可用性（admin 页面/下载链接/API 激活）
 
 ## 4. Verification
 
-- [ ] `/payment-apps/<appId>/releases/<versionName>/<baseSha256>/manifest.json` 可访问。
-- [ ] manifest 中 artifacts URL 全可访问且 hash/size 校验一致。
-- [ ] Android 端安装冒烟通过（base + required splits）。
-- [ ] 无 `manifest_invalid` / `artifact_unreachable` / `split_missing` / `signature_mismatch`。
+- [ ] admin: `pm2` 进程健康，`nginx -t && nginx -s reload` 成功。
+- [ ] android: 版本 APK 已复制到 `download-site/site/android/<version>/`，`current.json` 已原子更新。
+- [ ] phonepe: 版本 APK 已复制到 `download-site/site/phonepe/<version>/`，activate API 已按预期调用。
+- [ ] checksum/pg/redis 容器健康。
 
-## 5. Stability Regression (10 Runs)
+## 5. Stability Regression
 
-- [ ] 在 `--test` 环境完成连续 10 次发布回归。
-- [ ] 10 次发布中无 502 上传失败（HTTP 上传链路已移除）。
-- [ ] 幂等回归通过：重复发布同幂等键返回已存在 release。
+- [ ] 至少完成一次每产品 dry-run + real-run 验证（阻塞须记录）。
+- [ ] 失败注入（origin 缺失 tag）可稳定阻断。
 
 ## 6. Rollback
 
-- [ ] 回滚仅切 active release 或 `current.json` pointer。
-- [ ] 不修改历史静态目录，不覆盖已发布文件。
-- [ ] 回滚后再次执行 manifest + 安装冒烟验证。
+- [ ] admin: 回滚到上一 tag 并执行 `pm2 startOrReload` + `nginx reload`。
+- [ ] android/phonepe: 回滚仅切 `current.json` pointer，不覆盖历史目录。
+- [ ] checksum: 继续按容器镜像 tag 回滚。
 
 ## 7. Go / No-Go
 

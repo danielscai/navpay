@@ -2,7 +2,7 @@
 
 ## Purpose
 
-将 Android 支付 App 发布统一为“不可变静态目录 + 可变 pointer”的两层模型。
+将 Android 发布统一为“本地打包 + 复制到静态目录 + 原子 pointer”的两层模型。
 
 - 不可变层：`/payment-apps/<appId>/releases/<versionName>/<baseSha256>/...`
 - 可变层：`/payment-apps/<appId>/current.json`
@@ -26,6 +26,7 @@
 4. 发布/部署前必须执行：`git fetch --tags --force origin` + `git pull --ff-only origin main`
 5. 不传 `--version` 时，从本地最新 tag 推导版本并校验 `origin` 存在
 6. `current.json` 更新必须使用临时文件 + 原子 `mv`
+7. Android 不依赖远端 build-runner 默认路径；默认在当前仓库本地打包
 
 ## current.json Contract
 
@@ -36,6 +37,12 @@
 - `versionName`
 - `versionCode`
 - `manifestUrl`
+- `updatedAt`
+
+当前实现最小字段：
+
+- `version`
+- `tag`
 - `updatedAt`
 
 ## Rollback Workflow
